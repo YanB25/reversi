@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "*.sql": "sql",
+        "ostream": "cpp",
+        "cctype": "cpp",
+        "iostream": "cpp",
+        "utility": "cpp"
+    }
+}
