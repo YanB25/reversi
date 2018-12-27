@@ -18,7 +18,6 @@ const char BLACK = 'X';
 const char WHITE = 'O';
 const char NONE = ' ';
 const char DROP = '+';
-
 class ChessBox {
 public:
     explicit ChessBox(char role);
