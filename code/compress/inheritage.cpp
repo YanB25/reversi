@@ -83,7 +83,7 @@ void self_play(int i, int j) {
 
         g_win_lose_lock.lock();
         win_lose[i][j] += black - white;
-        cout << i << " " << j << " " << black-white << endl;
+        // cout << i << " " << j << " " << black-white << endl;
         win_lose[j][i] += white - black;
         // cout << win_lose[j][i] << endl;
         g_win_lose_lock.unlock();
@@ -92,6 +92,7 @@ void self_play(int i, int j) {
 }
 int main() {
     srand(time(0));
+    printf("iters, ids, wins, newrecord, p1, p2, p3, p4, p5\n");
     for (int _ = 0; _ < ITERS; ++_) {
         vector<thread> threads;
 
@@ -101,7 +102,7 @@ int main() {
         for (int i = 1; i < GAME; ++i) {
             vector<double> tmps(param[0].begin(), param[0].end());
             for (int k = 0; k < param[0].size(); ++k) {
-                double percentage = ((rand() % 50) - 25) * 0.01;
+                double percentage = ((rand() % 30) - 15) * 0.01;
                 tmps[k] *= 1 + percentage;
             }
             param[i].assign(tmps.begin(), tmps.end());
@@ -127,25 +128,30 @@ int main() {
         for (auto& thread: threads) {
             thread.join();
         }
-        cout << "====== show result ======" << endl;
+        // cout << "====== show result ======" << endl;
         vector<int> sumup(GAME);
         for (int i = 0; i < GAME; ++i) {
             for (int j = 0; j < GAME; ++j) {
-                cout << win_lose[i][j] << " ";
+                // cout << win_lose[i][j] << " ";
                 sumup[i] += win_lose[i][j];
             }
-            cout << endl;
+            // cout << endl;
         }
-        cout << endl;
+        // cout << endl;
+        // for (int i = 0; i < GAME; ++i) {
+        //     print(param[i]);
+        // }
+        // cout << endl;
+        // cout << "wins" << endl;
+        // for (int i = 0; i < GAME; ++i) {
+        //     cout << sumup[i] << " ";
+        // }
+        // cout << endl;
         for (int i = 0; i < GAME; ++i) {
-            print(param[i]);
+            printf("%d, %d, %d, %d, %lf, %lf, %lf, %lf, %lf\n", _, i, sumup[i], 0, param[i][0],
+                param[i][1], param[i][2], param[i][3], param[i][4]);
+            fflush(stdout);
         }
-        cout << endl;
-        cout << "wins" << endl;
-        for (int i = 0; i < GAME; ++i) {
-            cout << sumup[i] << " ";
-        }
-        cout << endl;
 
         auto argmax = std::max_element(sumup.begin(), sumup.end());
         int argmax_idx = argmax - sumup.begin();
