@@ -1,6 +1,7 @@
 #include "chessbox.hpp"
 #include "bictl.hpp"
 #include <iostream>
+#include <vector>
 using namespace std;
 
 ChessBox::ChessBox(int default_player) : player(default_player) {
@@ -184,4 +185,20 @@ void ChessBox::drop(int row, int col, int p) {
     #endif
     __place(sq, p);
     __flip(sq, p);
+}
+
+vector<int> ChessBox::movessq(int p) const {
+    vector<int> ret;
+    u64 moves = getMovable(p);
+    if (moves & 1) {
+        ret.push_back(0);
+    }
+    int i = 0;
+    while (moves >>= 1) {
+        i++;
+        if (moves & 1) {
+            ret.push_back(i);
+        }
+    }
+    return ret;
 }

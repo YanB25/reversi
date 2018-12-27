@@ -1,5 +1,7 @@
 #include <iostream>
 #include "../chessbox.hpp"
+#include <vector>
+using namespace std;
 int main() {
     ChessBox chessbox(BLACK_ID);
     chessbox.defaultInit();
@@ -35,6 +37,12 @@ int main() {
         chessbox.__changePlayer();
         cout << chessbox;
         player = !player;
+
+        vector<int> movables = chessbox.movessq(player);
+        for (const auto& move: movables) {
+            cout << move << " ";
+        }
+        cout << endl;
     }
 
 };
