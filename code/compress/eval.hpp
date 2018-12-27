@@ -45,10 +45,18 @@ public:
 
 };
 
+class FrontEval : public EvalBase {
+public:
+    FrontEval(){}
+    virtual double eval(const ChessBox& cb, int p) const;
+    virtual ~FrontEval() {}
+};
+
 class AllInOneEval : public EvalBase {
 public:
     AllInOneEval() {}
     virtual double eval(const ChessBox& cb, int p) const;
+    void detailEval(const ChessBox& cb, int p) const;
     virtual ~AllInOneEval() {}
     void addEval(EvalBase& eval) {
         evals.push_back(&eval);
@@ -56,5 +64,16 @@ public:
 private:
     vector<EvalBase*> evals;
 };
+
+
+class ActionEval : public EvalBase {
+public:
+    ActionEval() {}
+    virtual double eval(const ChessBox& cb, int p) const;
+    virtual ~ActionEval() {}
+private:
+    vector<EvalBase*> evals;
+};
+
 
 #endif

@@ -56,6 +56,7 @@ public:
     void __changePlayer() { player = !player; }
     void __place(int sq, int p);
     void __flip(int sq, int player);
+    u64 __getBoard(int p) const { return boards[p]; }
 private:
     inline void __debug_check_sq(int sq) const { 
         #ifdef DEBUG

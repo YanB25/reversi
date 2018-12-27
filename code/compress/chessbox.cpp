@@ -75,7 +75,7 @@ int ChessBox::countPieces(int p) const {
     return __builtin_popcountll(boards[p]);
 }
 
-inline bool ChessBox::isEnd() const {
+bool ChessBox::isEnd() const {
     __debug_check_intersect();
     return ~(boards[0] | boards[1]) == 0;
 }
@@ -142,7 +142,7 @@ inline u64 ChessBox::getMovable(int p) const {
     return ret;
 }
 
-inline u64 ChessBox::getFrontier() const {
+u64 ChessBox::getFrontier() const {
     u64 empty = getEmpty();
     return (N(empty)
         | S(empty)
