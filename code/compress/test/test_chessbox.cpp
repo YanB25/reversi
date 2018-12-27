@@ -39,7 +39,7 @@ int main() {
         chessbox.drop(a, b, player);
         cout << chessbox;
 
-        vector<Position> s = abs.n_solve(3, !player);
+        vector<Position> s = abs.n_solve(10, !player);
         for (const auto& pos : s) {
             cout << pos.x << " " << pos.y << " " << pos.val << endl;
         }
@@ -47,10 +47,10 @@ int main() {
         chessbox.drop(pos.x, pos.y, !player);
 
         cout << chessbox << endl;
-        // s = abs.n_solve(10, player);
-        // for (const auto& pos : s) {
-        //     cout << pos.x << " " << pos.y << " " << pos.val << endl;
-        // }
+        s = abs.n_solve(10, player);
+        for (const auto& pos : s) {
+            cout << pos.x << " " << pos.y << " " << pos.val << endl;
+        }
     }
 
 };

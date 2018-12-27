@@ -7,13 +7,23 @@ using std::min;
 Solution::~Solution(){}
 
 // 假设估值函数永远以黑子为先地估值
-vector<Position> AlphaBetaSolve::n_solve(int n, int p) const {
+vector<Position> AlphaBetaSolve::n_solve(int n, int p, int depth, bool trunc) const {
     vector<int> moves = chessbox.movessq(p);
     vector<Position> candidates;
+    int target_num = max(moves.size() / 2, 3ul);
+
+    if (trunc && (int)moves.size() > target_num) {
+        vector<Position> prefilters = n_solve(n, p, depth / 2, false);
+        moves.clear();
+        for (int i = 0; i < target_num; ++i) {
+            moves.push_back(prefilters[i].x * 8 + prefilters[i].y);
+        }
+    }
+
     for (int move : moves) {
         ChessBox ncb(chessbox);
         ncb.drop(move / 8, move % 8, p);
-        int val = alphabeta(ncb, 8,  -INF, INF, !p);
+        int val = alphabeta(ncb, depth,  -INF, INF, !p);
         candidates.emplace_back(move/8, move%8, val);
     }
     sort(candidates.begin(), candidates.end());
@@ -23,13 +33,13 @@ vector<Position> AlphaBetaSolve::n_solve(int n, int p) const {
     return candidates;
 }
 
-Position AlphaBetaSolve::solve(int p) const {
-    return n_solve(1, p).front();
+Position AlphaBetaSolve::solve(int p, int depth, bool trunc) const {
+    return n_solve(1, p, depth, trunc).front();
 }
 
 AlphaBetaSolve::~AlphaBetaSolve() {}
 
-double AlphaBetaSolve::alphabeta(ChessBox cb, int depth, double alpha, double beta, int player) const {
+double AlphaBetaSolve::alphabeta(ChessBox cb, int depth, double alpha, double beta, int player, bool trunc) const {
     if (depth == 0) {
         return eval.eval(cb, BLACK_ID);
     }
