@@ -24,7 +24,7 @@ void ChessBox::defaultInit() {
     __place(TO_SQUARE(half, half), BLACK_ID);
 }
 
-inline bool ChessBox::isEmpty(int sq) const {
+bool ChessBox::isEmpty(int sq) const {
     __debug_check_sq(sq);
     return !((boards[0] | boards[1]) & (1ull << sq));
 }

@@ -31,15 +31,24 @@ int main() {
     // cout << "black, white, all " << bl << " " << w << " " << al << endl;
 
     int player = BLACK_ID;
-    CountingEval ce;
-    AlphaBetaSolve abs(ce, chessbox);
+    TableEval te;
+    CornerEval ce;
+    CountingEval cte;
+
+    AllInOneEval eval;
+    eval.addEval(te);
+    eval.addEval(ce);
+    eval.addEval(cte);
+
+    AlphaBetaSolve abs(eval, chessbox);
+
     for (int i = 0; i < 10; ++i) {
         int a, b;
         cin >> a >> b;
         chessbox.drop(a, b, player);
         cout << chessbox;
 
-        vector<Position> s = abs.n_solve(10, !player);
+        vector<Position> s = abs.n_solve(10, !player, 8);
         for (const auto& pos : s) {
             cout << pos.x << " " << pos.y << " " << pos.val << endl;
         }
@@ -47,7 +56,7 @@ int main() {
         chessbox.drop(pos.x, pos.y, !player);
 
         cout << chessbox << endl;
-        s = abs.n_solve(10, player);
+        s = abs.n_solve(10, player, 6);
         for (const auto& pos : s) {
             cout << pos.x << " " << pos.y << " " << pos.val << endl;
         }

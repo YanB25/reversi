@@ -10,14 +10,11 @@ Solution::~Solution(){}
 vector<Position> AlphaBetaSolve::n_solve(int n, int p, int depth, bool trunc) const {
     vector<int> moves = chessbox.movessq(p);
     vector<Position> candidates;
-    int target_num = max((unsigned long)(moves.size() * 0.7), 3ul);
+    int target_num = max((unsigned long)(moves.size() / 2), 3ul);
 
     if (trunc && (int)moves.size() > target_num) {
-        vector<Position> prefilters = n_solve(n, p, depth / 2, false);
-        moves.clear();
-        for (int i = 0; i < target_num; ++i) {
-            moves.push_back(prefilters[i].x * 8 + prefilters[i].y);
-        }
+        vector<int> ret = search_helper(chessbox, target_num, p, depth / 2);
+        moves.assign(ret.begin(), ret.end());
     }
 
     for (int move : moves) {
@@ -55,6 +52,11 @@ double AlphaBetaSolve::alphabeta(ChessBox cb, int depth, double alpha, double be
         return eval.eval(cb, BLACK_ID);
     }
 
+    int target_num = max(3ul, (unsigned long)(movables.size() / 2));
+    if (trunc && depth >= 6 && target_num > movables.size()) {
+        vector<int> ret = search_helper(cb, target_num, player, depth / 2);
+        movables.assign(ret.begin(), ret.end());
+    }
     // TODO: bug
     // // trying to trunc more
     // int target_num = max(3ul, movables.size() / 2);

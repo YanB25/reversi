@@ -73,10 +73,10 @@ private:
         #endif
     }
 
-
     int __size = 8;
     int player; // 1 for black and 0 for white
     u64 boards[2] = {0ull, 0ull};
+
 };
 
 
