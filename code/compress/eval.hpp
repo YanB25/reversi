@@ -58,11 +58,20 @@ public:
     virtual double eval(const ChessBox& cb, int p) const;
     void detailEval(const ChessBox& cb, int p) const;
     virtual ~AllInOneEval() {}
-    void addEval(EvalBase& eval) {
+    void addEval(EvalBase& eval, double co) {
         evals.push_back(&eval);
+        coefficients.push_back(co);
+    }
+    int size() const { return evals.size(); }
+    void set(int idx, double val) { coefficients[idx] = val; }
+    double get(int idx) const { return coefficients[idx]; }
+    vector<double> getParams() const { return coefficients; }
+    void setParams(const vector<double>& params) {
+        coefficients.assign(params.cbegin(), params.cend());
     }
 private:
     vector<EvalBase*> evals;
+    vector<double> coefficients;
 };
 
 

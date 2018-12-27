@@ -21,7 +21,7 @@ bool whitePosCmp(const Position& lhs, const Position& rhs);
 typedef unsigned long long u64;
 class ChessBox {
 public:
-    ChessBox(int default_palyer);
+    ChessBox(int default_palyer = BLACK_ID);
     void defaultInit();
 
     bool isBlackPlayer() const { return player == BLACK_ID; }
@@ -38,6 +38,13 @@ public:
     int countMyPieces() const;
     int countOppPieces() const;
     int countPieces(int p) const;
+    int countBlackPieces() const;
+    int countWhitePieces() const;
+
+    int winner() const {
+        cout << __builtin_popcountll(boards[BLACK_ID]) << " " << __builtin_popcountll(boards[WHITE_ID]) << endl;
+        return __builtin_popcountll(boards[BLACK_ID]) > __builtin_popcountll(boards[WHITE_ID]) ? BLACK_ID : WHITE_ID;
+    }
 
     bool isEnd() const;
     int size() const { return __size; }

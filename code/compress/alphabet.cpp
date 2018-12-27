@@ -16,21 +16,26 @@ vector<Position> AlphaBetaSolve::n_solve(int n, int p, int depth, bool trunc) co
         vector<int> ret = search_helper(chessbox, target_num, p, depth / 2);
         moves.assign(ret.begin(), ret.end());
     }
-
+    // cout << "t1 move is " << moves.size() << endl;
     for (int move : moves) {
         ChessBox ncb(chessbox);
         ncb.drop(move / 8, move % 8, p);
         int val = alphabeta(ncb, depth,  -INF, INF, !p);
         candidates.emplace_back(move/8, move%8, val);
     }
+    // cout << "t2 candidate size is " << candidates.size() << endl;
     if (p == BLACK_ID) {
         sort(candidates.begin(), candidates.end(), blackPosCmp);
     } else {
         assert(p == WHITE_ID);
         sort(candidates.begin(), candidates.end(), whitePosCmp);
     }
+    // cout << "t3 " << candidates.size() << " " << n << endl;
     if ((int)candidates.size() > n) {
         candidates.resize(n);
+    }
+    if (candidates.empty()) {
+        candidates.push_back(Position(-1, -1, 0));
     }
     return candidates;
 }

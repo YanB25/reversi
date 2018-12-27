@@ -16,11 +16,11 @@ int main() {
     FrontEval fe;
 
     AllInOneEval eval;
-    eval.addEval(te);
-    eval.addEval(ce);
-    eval.addEval(cte);
-    eval.addEval(ae);
-    eval.addEval(fe);
+    eval.addEval(te, 1);
+    eval.addEval(ce, 1);
+    eval.addEval(cte, 10);
+    eval.addEval(ae, 8);
+    eval.addEval(fe, 7);
 
     AlphaBetaSolve abs(eval, chessbox);
 

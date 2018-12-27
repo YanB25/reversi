@@ -64,7 +64,14 @@ int ChessBox::countMyPieces() const {
     __debug_check_intersect();
     return __builtin_popcountll(boards[player]);
 }
-
+int ChessBox::countBlackPieces() const {
+    __debug_check_intersect();
+    return __builtin_popcountll(boards[BLACK_ID]);
+}
+int ChessBox::countWhitePieces() const {
+    __debug_check_intersect();
+    return __builtin_popcountll(boards[WHITE_ID]);
+}
 int ChessBox::countOppPieces() const {
     __debug_check_intersect();
     return __builtin_popcountll(boards[!player]);
@@ -77,7 +84,7 @@ int ChessBox::countPieces(int p) const {
 
 bool ChessBox::isEnd() const {
     __debug_check_intersect();
-    return ~(boards[0] | boards[1]) == 0;
+    return (~(boards[0] | boards[1]) == 0) || (getMovable(0) == 0 && getMovable(1) == 0);
 }
 
 ostream& operator<<(ostream& os, const ChessBox& chessbox) {
@@ -185,6 +192,9 @@ void ChessBox::__flip(int sq, int p) {
 
 void ChessBox::drop(int row, int col, int p) {
     __debug_check_player(p);
+    if (row == -1) {
+        return;
+    }
     int sq = TO_SQUARE(row, col);
     #ifdef DEBUG
     u64 moves = getMovable(p);

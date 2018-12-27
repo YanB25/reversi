@@ -4,9 +4,9 @@ double CountingEval::eval(const ChessBox& cb, int p) const {
     int m = cb.countPieces(p);
     int o = cb.countPieces(!p);
     if (m > o) {
-        return 10 * (100 * m) / (m + o) ;
+        return (100 * m) / (m + o) ;
     } else if (m < 0){
-        return 10 * -(100 * o) / (m + o);
+        return -(100 * o) / (m + o);
     } else {
         return 0;
     }
@@ -88,9 +88,9 @@ double FrontEval::eval(const ChessBox& cb, int p) const {
     double my_b = __builtin_popcountll(f & my);
     double otr_b = __builtin_popcountll(f & otr);
     if (my_b > otr_b) {
-        return 7 *(-100 * my_b) / (my_b + otr_b);
+        return (-100 * my_b) / (my_b + otr_b);
     } else if (my_b < otr_b) {
-        return 7 * (100 * otr_b) / (my_b + otr_b);
+        return (100 * otr_b) / (my_b + otr_b);
     } else {
         return 0;
     }
@@ -98,18 +98,25 @@ double FrontEval::eval(const ChessBox& cb, int p) const {
 
 double AllInOneEval::eval(const ChessBox& cb, int p) const {
     double ret = 0;
-    for (const auto& eval: evals) {
-        ret += eval->eval(cb, p);
+    for (int i = 0; i < evals.size(); ++i) {
+        ret += evals[i]->eval(cb, p) * coefficients[i];
     }
+    // for (const auto& eval: evals) {
+    //     ret += eval->eval(cb, p);
+    // }
     return ret;
 }
 
 void AllInOneEval::detailEval(const ChessBox& cb, int p) const {
     double ret;
-    for (const auto& eval: evals) {
-        ret = eval->eval(cb, p);
+    for (int i = 0; i < evals.size(); ++i) {
+        ret = evals[i]->eval(cb, p) * coefficients[i];
         cout << ret << " ";
     }
+    // for (const auto& eval: evals) {
+    //     ret = eval->eval(cb, p);
+    //     cout << ret << " ";
+    // }
     cout << endl;
 }
 
@@ -117,9 +124,9 @@ double ActionEval::eval(const ChessBox& cb, int p) const {
     double my = __builtin_popcountll(cb.getMovable(p));
     double other = __builtin_popcountll(cb.getMovable(!p));
     if (my > other) {
-        return 8 * 100 * my / (my + other);
+        return 100 * my / (my + other);
     } else if (my < other) {
-        return 8 * -100 * other / (my + other);
+        return -100 * other / (my + other);
     } else {
         return 0;
     }
