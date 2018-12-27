@@ -108,3 +108,25 @@ double AlphaBetaSolve::alphabeta(ChessBox cb, int depth, double alpha, double be
     }
     return v;
 }
+
+vector<int> AlphaBetaSolve::search_helper(const ChessBox& cb, int n, int player, int depth) const {
+    vector<int> moves = cb.movessq(player);
+    vector<Position> candidates;
+    for (int move : moves) {
+        ChessBox ncb(cb);
+        ncb.drop(move/8, move%8, player);
+        double ret = alphabeta(ncb, depth, -INF, INF, !player, false);
+        candidates.emplace_back(move / 8, move % 8, ret);
+    }
+    if (player == BLACK_ID) {
+        sort(candidates.begin(), candidates.end(), blackPosCmp);
+    } else {
+        assert(player == WHITE_ID);
+        sort(candidates.begin(), candidates.end(), whitePosCmp);
+    }
+    vector<int> new_moves;
+    for (int i = 0; i < n && i < candidates.size(); ++i) {
+        new_moves.push_back(candidates[i].x * 8 + candidates[i].y);
+    }
+    return new_moves;
+}

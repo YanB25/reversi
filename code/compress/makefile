@@ -1,6 +1,6 @@
 all: test
 CC=g++
-CCFLAGS=-std=c++11 -ofast -Wall -W -D DEBUG
+CCFLAGS=-std=c++11 -ofast -D DEBUG
 chessbox.o: chessbox.cpp chessbox.hpp
 	${CC} -c ${CCFLAGS} -o $@ $<
 alphabet.o: alphabet.cpp alphabet.hpp

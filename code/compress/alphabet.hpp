@@ -27,6 +27,7 @@ public:
     double alphabeta(ChessBox cb, int depth, double alpha, double beta, int p, bool trunc=true) const;
     virtual Position solve(int p, int depth = 8, bool trunc=true) const;
     virtual vector<Position> n_solve(int n, int p, int depth = 8, bool trunc=true) const;
+    vector<int> search_helper(const ChessBox& cb, int n, int p, int depth) const;
     // virtual vector<Position> solve_candidates(int p) const;
     virtual ~AlphaBetaSolve();
 };
