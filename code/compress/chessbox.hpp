@@ -15,11 +15,9 @@ struct Position {
     Position(int _x, int _y, double v = 0): x(_x), y(_y), val(v) {}
     Position(): x(-1), y(-1), val(0) {}
     Position(const Position& rhs) = default;
-    bool operator<(const Position& rhs) const {
-        return val > rhs.val;
-    }
 };
-
+bool blackPosCmp(const Position& lhs, const Position& rhs);
+bool whitePosCmp(const Position& lhs, const Position& rhs);
 typedef unsigned long long u64;
 class ChessBox {
 public:

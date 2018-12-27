@@ -4,6 +4,12 @@
 #include <vector>
 using namespace std;
 
+bool blackPosCmp(const Position& lhs, const Position& rhs) {
+    return rhs.val < lhs.val;
+}
+bool whitePosCmp(const Position& lhs, const Position& rhs) {
+    return rhs.val > lhs.val;
+}
 
 ChessBox::ChessBox(int default_player) : player(default_player) {
     assert(default_player == BLACK_ID || default_player == WHITE_ID);

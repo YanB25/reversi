@@ -10,7 +10,7 @@ Solution::~Solution(){}
 vector<Position> AlphaBetaSolve::n_solve(int n, int p, int depth, bool trunc) const {
     vector<int> moves = chessbox.movessq(p);
     vector<Position> candidates;
-    int target_num = max(moves.size() / 2, 3ul);
+    int target_num = max((unsigned long)(moves.size() * 0.7), 3ul);
 
     if (trunc && (int)moves.size() > target_num) {
         vector<Position> prefilters = n_solve(n, p, depth / 2, false);
@@ -26,7 +26,12 @@ vector<Position> AlphaBetaSolve::n_solve(int n, int p, int depth, bool trunc) co
         int val = alphabeta(ncb, depth,  -INF, INF, !p);
         candidates.emplace_back(move/8, move%8, val);
     }
-    sort(candidates.begin(), candidates.end());
+    if (p == BLACK_ID) {
+        sort(candidates.begin(), candidates.end(), blackPosCmp);
+    } else {
+        assert(p == WHITE_ID);
+        sort(candidates.begin(), candidates.end(), whitePosCmp);
+    }
     if ((int)candidates.size() > n) {
         candidates.resize(n);
     }
@@ -49,6 +54,31 @@ double AlphaBetaSolve::alphabeta(ChessBox cb, int depth, double alpha, double be
     if (movables.empty()) {
         return eval.eval(cb, BLACK_ID);
     }
+
+    // TODO: bug
+    // // trying to trunc more
+    // int target_num = max(3ul, movables.size() / 2);
+    // vector<Position> candidates;
+    // if (trunc && depth >= 6 && target_num > movables.size()) {
+    //     for (int move: movables) {
+    //         ChessBox ncb(chessbox);
+    //         ncb.drop(move / 8, move % 8, player);
+    //         double v = alphabeta(ncb, depth / 2, alpha, beta, !player, false);
+    //         candidates.emplace_back(move/8, move%8, v);
+    //     }
+
+    //     if (player == BLACK_ID) {
+    //         sort(candidates.begin(), candidates.end(), blackPosCmp);
+    //     } else {
+    //         assert(player == WHITE_ID);
+    //         sort(candidates.begin(), candidates.end(), whitePosCmp);
+    //     }
+    //     movables.clear();
+
+    //     for (int i = 0; i < target_num; ++i) {
+    //         movables.push_back(candidates[i].x * 8 + candidates[i].y);
+    //     }
+    // }
 
     if (player == WHITE_ID) {
         v = INF;
