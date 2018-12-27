@@ -13,6 +13,7 @@ using namespace std;
 
 const int GAME = 3;
 const int ROUND = 2;
+const int ITERS = 3;
 // int initParams[] = {1, 1, 10, 8, 7};
 vector<double> initParams{1, 1, 10, 8, 7};
 
@@ -62,12 +63,11 @@ std::mutex g_win_lose_lock;
 
 void self_play(int i, int j) {
     // cout << "hello from " << i << " " << j << endl;
-    ChessBox chessbox(BLACK_ID);
-    chessbox.defaultInit();
-    AlphaBetaSolve ab_left(evalGroups[i].eval, chessbox);
-    AlphaBetaSolve ab_right(evalGroups[j].eval, chessbox);
-
     for (int r = 0; r < ROUND; ++r) {
+        ChessBox chessbox(BLACK_ID);
+        chessbox.defaultInit();
+        AlphaBetaSolve ab_left(evalGroups[i].eval, chessbox);
+        AlphaBetaSolve ab_right(evalGroups[j].eval, chessbox);
         while(!chessbox.isEnd()) {
             auto p1 = ab_left.solve(BLACK_ID, 6);
             chessbox.drop(p1.x, p1.y, BLACK_ID);
@@ -92,7 +92,7 @@ void self_play(int i, int j) {
 }
 int main() {
     srand(time(0));
-    for (int _ = 0; _ < 2; ++_) {
+    for (int _ = 0; _ < ITERS; ++_) {
         vector<thread> threads;
 
         param.clear();

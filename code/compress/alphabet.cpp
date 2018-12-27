@@ -1,5 +1,6 @@
 #include "alphabet.hpp"
 #include <algorithm>
+#include <stdlib.h>
 using std::max;
 using std::min;
 #define INF (1e8)
@@ -41,7 +42,10 @@ vector<Position> AlphaBetaSolve::n_solve(int n, int p, int depth, bool trunc) co
 }
 
 Position AlphaBetaSolve::solve(int p, int depth, bool trunc) const {
-    return n_solve(1, p, depth, trunc).front();
+    auto choices = n_solve(3, p, depth, trunc);
+    int target = rand() % choices.size();
+    // cout << "target " << target << endl;
+    return choices[target];
 }
 
 AlphaBetaSolve::~AlphaBetaSolve() {}

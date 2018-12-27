@@ -2,6 +2,8 @@
 #define ALPHA_BET_HPP
 
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 #include "chessbox.hpp"
 #include "eval.hpp"
 using namespace std;
@@ -23,7 +25,8 @@ protected:
 
 class AlphaBetaSolve : public BaseSolution {
 public:
-    AlphaBetaSolve(const EvalBase& eval, const ChessBox& cb): BaseSolution(eval, cb) {}
+    AlphaBetaSolve(const EvalBase& eval, const ChessBox& cb): BaseSolution(eval, cb) {
+    }
     double alphabeta(ChessBox cb, int depth, double alpha, double beta, int p, bool trunc=true) const;
     virtual Position solve(int p, int depth = 8, bool trunc=true) const;
     virtual vector<Position> n_solve(int n, int p, int depth = 8, bool trunc=true) const;
