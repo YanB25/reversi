@@ -31,15 +31,15 @@ public:
     int size() const { return __size; }
 
     u64 getEmpty() const;
-    u64 getMovable() const;
+    u64 getMovable(int p) const;
     u64 getFrontier() const;
 
     friend ostream& operator<<(ostream&, const ChessBox&);
 
-    void changePlayer() { player = !player; }
-    void place(int sq);
-    void placePlayer(int sq, int player);
+    void __changePlayer() { player = !player; }
+    void __place(int sq, int p);
     void __flip(int sq, int player);
+    void drop(int row, int col, int player);
 
     int TO_SQUARE(int row, int col) const { return row * __size + col; }
     

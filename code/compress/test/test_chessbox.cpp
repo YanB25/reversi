@@ -31,11 +31,10 @@ int main() {
     for (int i = 0; i < 10; ++i) {
         int a, b;
         cin >> a >> b;
-        chessbox.placePlayer(chessbox.TO_SQUARE(a, b), player);
-        chessbox.__flip(chessbox.TO_SQUARE(a, b), player);
-        chessbox.changePlayer();
-        player = !player;
+        chessbox.drop(a, b, player);
+        chessbox.__changePlayer();
         cout << chessbox;
+        player = !player;
     }
 
 };

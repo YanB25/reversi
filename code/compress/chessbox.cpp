@@ -10,10 +10,10 @@ ChessBox::ChessBox(int default_player) : player(default_player) {
 
 void ChessBox::defaultInit() {
     int half = __size / 2;
-    placePlayer(TO_SQUARE(half-1, half-1), BLACK_ID);
-    placePlayer(TO_SQUARE(half, half-1), WHITE_ID);
-    placePlayer(TO_SQUARE(half - 1, half), WHITE_ID);
-    placePlayer(TO_SQUARE(half, half), BLACK_ID);
+    __place(TO_SQUARE(half-1, half-1), BLACK_ID);
+    __place(TO_SQUARE(half, half-1), WHITE_ID);
+    __place(TO_SQUARE(half - 1, half), WHITE_ID);
+    __place(TO_SQUARE(half, half), BLACK_ID);
 }
 
 inline bool ChessBox::isEmpty(int sq) const {
@@ -54,7 +54,7 @@ inline bool ChessBox::isEnd() const {
 
 ostream& operator<<(ostream& os, const ChessBox& chessbox) {
     int size = chessbox.size();
-    u64 movables = chessbox.getMovable();
+    u64 movables = chessbox.getMovable(chessbox.player);
     os << "  ";
     for (int i = 0; i < chessbox.size(); ++i) {
         os << i << " ";
@@ -78,11 +78,7 @@ ostream& operator<<(ostream& os, const ChessBox& chessbox) {
     return os;
 }
 
-void ChessBox::place(int sq) {
-    boards[player] |= 1ull << sq;
-}
-
-void ChessBox::placePlayer(int sq, int p) {
+void ChessBox::__place(int sq, int p) {
     assert(p == BLACK_ID || p == WHITE_ID);
     boards[p] |= 1ull << sq;
 }
@@ -98,11 +94,11 @@ inline u64 ChessBox::getEmpty() const {
     } \
     ret |= dir(tmp) & empty;
 
-inline u64 ChessBox::getMovable() const {
+inline u64 ChessBox::getMovable(int p) const {
     u64 empty = getEmpty();
     u64 tmp, ret = 0;
-    u64 cur = boards[player];
-    u64 opp = boards[!player];
+    u64 cur = boards[p];
+    u64 opp = boards[!p];
 
     MOVABLE_HELPER(N);
     MOVABLE_HELPER(S);
@@ -155,4 +151,10 @@ void ChessBox::__flip(int sq, int p) {
     FLIP_HELPER(NW);
     FLIP_HELPER(SE);
     FLIP_HELPER(SW);
+}
+
+void ChessBox::drop(int row, int col, int p) {
+    int sq = TO_SQUARE(row, col);
+    __place(sq, p);
+    __flip(sq, p);
 }
