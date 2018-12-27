@@ -16,7 +16,7 @@ struct Position {
     Position(): x(-1), y(-1), val(0) {}
     Position(const Position& rhs) = default;
     bool operator<(const Position& rhs) const {
-        return val < rhs.val;
+        return val > rhs.val;
     }
 };
 

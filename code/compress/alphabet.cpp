@@ -11,7 +11,9 @@ vector<Position> AlphaBetaSolve::n_solve(int n, int p) const {
     vector<int> moves = chessbox.movessq(p);
     vector<Position> candidates;
     for (int move : moves) {
-        int val = alphabeta(chessbox, 8, -INF, INF, !p);
+        ChessBox ncb(chessbox);
+        ncb.drop(move / 8, move % 8, p);
+        int val = alphabeta(ncb, 8,  -INF, INF, !p);
         candidates.emplace_back(move/8, move%8, val);
     }
     sort(candidates.begin(), candidates.end());
@@ -29,16 +31,21 @@ AlphaBetaSolve::~AlphaBetaSolve() {}
 
 double AlphaBetaSolve::alphabeta(ChessBox cb, int depth, double alpha, double beta, int player) const {
     if (depth == 0) {
-        // TODO: 
-        return 0;
+        return eval.eval(cb, BLACK_ID);
     }
     vector<int> movables = cb.movessq(player);
     double v;
+
+    if (movables.empty()) {
+        return eval.eval(cb, BLACK_ID);
+    }
+
     if (player == WHITE_ID) {
         v = INF;
         for (int move: movables) {
             ChessBox ncb(cb);
-            ncb.__place(move, player);
+            // ncb.__place(move, player);
+            ncb.drop(move / 8, move % 8, player);
             v = min(v, alphabeta(ncb, depth - 1, alpha, beta, !player));
             beta = min(beta, v);
             if (beta <= alpha) {
@@ -50,7 +57,8 @@ double AlphaBetaSolve::alphabeta(ChessBox cb, int depth, double alpha, double be
         v = -INF;
         for (int move : movables) {
             ChessBox ncb(cb);
-            ncb.__place(move, player);
+            // ncb.__place(move, player);
+            ncb.drop(move / 8, move % 8, player);
             v = max(v, alphabeta(ncb, depth - 1, alpha, beta, !player));
             alpha = max(alpha, v);
             if (beta <= alpha) {

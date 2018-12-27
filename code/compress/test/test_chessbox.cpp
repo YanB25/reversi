@@ -31,24 +31,26 @@ int main() {
     // cout << "black, white, all " << bl << " " << w << " " << al << endl;
 
     int player = BLACK_ID;
+    CountingEval ce;
+    AlphaBetaSolve abs(ce, chessbox);
     for (int i = 0; i < 10; ++i) {
         int a, b;
         cin >> a >> b;
         chessbox.drop(a, b, player);
-        chessbox.__changePlayer();
         cout << chessbox;
-        player = !player;
 
-        AlphaBetaSolve abs(chessbox);
-        vector<Position> s = abs.n_solve(10, player);
+        vector<Position> s = abs.n_solve(3, !player);
         for (const auto& pos : s) {
             cout << pos.x << " " << pos.y << " " << pos.val << endl;
         }
-        // vector<int> movables = chessbox.movessq(player);
-        // for (const auto& move: movables) {
-        //     cout << move << " ";
+        Position pos = s.front();
+        chessbox.drop(pos.x, pos.y, !player);
+
+        cout << chessbox << endl;
+        // s = abs.n_solve(10, player);
+        // for (const auto& pos : s) {
+        //     cout << pos.x << " " << pos.y << " " << pos.val << endl;
         // }
-        // cout << endl;
     }
 
 };

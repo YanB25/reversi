@@ -1,8 +1,9 @@
 #ifndef ALPHA_BET_HPP
 #define ALPHA_BET_HPP
 
-#include "chessbox.hpp"
 #include <vector>
+#include "chessbox.hpp"
+#include "eval.hpp"
 using namespace std;
 
 class Solution {
@@ -14,14 +15,15 @@ public:
 };
 class BaseSolution : public Solution{
 public:
-    BaseSolution(const ChessBox& cb): chessbox(cb) {}
+    BaseSolution(const EvalBase& eval, const ChessBox& cb): eval(eval), chessbox(cb) {}
 protected:
+    const EvalBase& eval;
     const ChessBox& chessbox;
 };
 
 class AlphaBetaSolve : public BaseSolution {
 public:
-    AlphaBetaSolve(const ChessBox& cb): BaseSolution(cb) {}
+    AlphaBetaSolve(const EvalBase& eval, const ChessBox& cb): BaseSolution(eval, cb) {}
     double alphabeta(ChessBox cb, int depth, double alpha, double beta, int p) const;
     virtual Position solve(int p) const;
     virtual vector<Position> n_solve(int n, int p) const;
