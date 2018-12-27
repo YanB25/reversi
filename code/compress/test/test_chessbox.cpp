@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../chessbox.hpp"
+#include "../alphabet.hpp"
 #include <vector>
 using namespace std;
 int main() {
@@ -38,11 +39,16 @@ int main() {
         cout << chessbox;
         player = !player;
 
-        vector<int> movables = chessbox.movessq(player);
-        for (const auto& move: movables) {
-            cout << move << " ";
+        AlphaBetaSolve abs(chessbox);
+        vector<Position> s = abs.n_solve(10, player);
+        for (const auto& pos : s) {
+            cout << pos.x << " " << pos.y << " " << pos.val << endl;
         }
-        cout << endl;
+        // vector<int> movables = chessbox.movessq(player);
+        // for (const auto& move: movables) {
+        //     cout << move << " ";
+        // }
+        // cout << endl;
     }
 
 };

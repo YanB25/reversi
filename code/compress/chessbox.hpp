@@ -11,7 +11,13 @@ using namespace std;
 struct Position {
     int x;
     int y;
-    Position(int _x, int _y): x(_x), y(_y) {}
+    int val;
+    Position(int _x, int _y, double v = 0): x(_x), y(_y), val(v) {}
+    Position(): x(-1), y(-1), val(0) {}
+    Position(const Position& rhs) = default;
+    bool operator<(const Position& rhs) const {
+        return val < rhs.val;
+    }
 };
 
 typedef unsigned long long u64;

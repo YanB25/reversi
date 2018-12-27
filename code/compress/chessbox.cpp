@@ -4,6 +4,7 @@
 #include <vector>
 using namespace std;
 
+
 ChessBox::ChessBox(int default_player) : player(default_player) {
     assert(default_player == BLACK_ID || default_player == WHITE_ID);
     assert(__size >= 1);
