@@ -46,6 +46,21 @@ public:
     int TO_SQUARE(int row, int col) const { return row * __size + col; }
     
 private:
+    inline void __debug_check_sq(int sq) const { 
+        #ifdef DEBUG
+        assert(sq >= 0 && sq < 64); 
+        #endif
+    }
+    inline void __debug_check_player(int p) const {
+        #ifdef DEBUG
+        assert(p == BLACK_ID || p == WHITE_ID);
+        #endif
+    }
+    inline void __debug_check_intersect() const {
+        #ifdef DEBUG
+        assert((boards[0] & boards[1]) == 0);
+        #endif
+    }
     int __size = 8;
     int player; // 1 for black and 0 for white
     u64 boards[2] = {0ull, 0ull};

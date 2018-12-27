@@ -17,46 +17,58 @@ void ChessBox::defaultInit() {
 }
 
 inline bool ChessBox::isEmpty(int sq) const {
+    __debug_check_sq(sq);
     return !((boards[0] | boards[1]) & (1ull << sq));
 }
 
 inline bool ChessBox::isMyPiece(int sq) const {
+    __debug_check_sq(sq);
     return (boards[player] >> sq) & 1;
 }
 
 inline bool ChessBox::isOppPiece(int sq) const {
+    __debug_check_sq(sq);
     return (boards[!player] >> sq) & 1;
 }
 
 inline bool ChessBox::isBlackPiece(int sq) const {
+    __debug_check_sq(sq);
     return (boards[BLACK_ID] >> sq) & 1;
 }
 
 inline bool ChessBox::isWhitePiece(int sq) const {
+    __debug_check_sq(sq);
     return (boards[WHITE_ID] >> sq) & 1;
 }
 
 inline bool ChessBox::isPiece(int sq, int p) const {
+    __debug_check_sq(sq);
+    __debug_check_player(p);
     return (boards[p] >> sq) & 1;
 }
 
 int ChessBox::countAllPieces() const {
+    __debug_check_intersect();
     return __builtin_popcountll(boards[0] | boards[1]);
 }
 
 int ChessBox::countMyPieces() const {
+    __debug_check_intersect();
     return __builtin_popcountll(boards[player]);
 }
 
 int ChessBox::countOppPieces() const {
+    __debug_check_intersect();
     return __builtin_popcountll(boards[!player]);
 }
 
 int ChessBox::countPieces(int p) const {
+    __debug_check_intersect();
     return __builtin_popcountll(boards[p]);
 }
 
 inline bool ChessBox::isEnd() const {
+    __debug_check_intersect();
     return ~(boards[0] | boards[1]) == 0;
 }
 
@@ -87,11 +99,13 @@ ostream& operator<<(ostream& os, const ChessBox& chessbox) {
 }
 
 void ChessBox::__place(int sq, int p) {
-    assert(p == BLACK_ID || p == WHITE_ID);
+    __debug_check_player(p);
+    __debug_check_sq(sq);
     boards[p] |= 1ull << sq;
 }
 
 inline u64 ChessBox::getEmpty() const {
+    __debug_check_intersect();
     return ~(boards[0] | boards[1]);
 }
 
@@ -162,7 +176,12 @@ void ChessBox::__flip(int sq, int p) {
 }
 
 void ChessBox::drop(int row, int col, int p) {
+    __debug_check_player(p);
     int sq = TO_SQUARE(row, col);
+    #ifdef DEBUG
+    u64 moves = getMovable(p);
+    assert(moves & (1ull << sq));
+    #endif
     __place(sq, p);
     __flip(sq, p);
 }
