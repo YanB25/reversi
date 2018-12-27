@@ -36,6 +36,10 @@ inline bool ChessBox::isWhitePiece(int sq) const {
     return (boards[WHITE_ID] >> sq) & 1;
 }
 
+inline bool ChessBox::isPiece(int sq, int p) const {
+    return (boards[p] >> sq) & 1;
+}
+
 int ChessBox::countAllPieces() const {
     return __builtin_popcountll(boards[0] | boards[1]);
 }
@@ -46,6 +50,10 @@ int ChessBox::countMyPieces() const {
 
 int ChessBox::countOppPieces() const {
     return __builtin_popcountll(boards[!player]);
+}
+
+int ChessBox::countPieces(int p) const {
+    return __builtin_popcountll(boards[p]);
 }
 
 inline bool ChessBox::isEnd() const {

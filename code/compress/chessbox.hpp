@@ -22,10 +22,12 @@ public:
     bool isOppPiece(int sq) const;
     bool isBlackPiece(int sq) const;
     bool isWhitePiece(int sq) const;
+    bool isPiece(int sq, int p) const;
 
     int countAllPieces() const;
     int countMyPieces() const;
     int countOppPieces() const;
+    int countPieces(int p) const;
 
     bool isEnd() const;
     int size() const { return __size; }
