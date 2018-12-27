@@ -4,6 +4,7 @@
         "ostream": "cpp",
         "cctype": "cpp",
         "iostream": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "vector": "cpp"
     }
 }
