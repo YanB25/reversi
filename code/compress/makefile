@@ -1,6 +1,6 @@
 all: test inheritage.out
 CC=g++
-CCFLAGS=-std=c++11 -ofast -D DEBUG
+CCFLAGS=-std=c++11 -ofast -D DEBUG -pthread
 chessbox.o: chessbox.cpp chessbox.hpp
 	${CC} -c ${CCFLAGS} -o $@ $<
 alphabet.o: alphabet.cpp alphabet.hpp

@@ -1,6 +1,8 @@
 #ifndef __CHESSBOX_HPP_
 #define __CHESSBOX_HPP_
 #include <iostream>
+#include <vector>
+#include <cassert>
 using namespace std;
 
 #define BLACK ('X')
