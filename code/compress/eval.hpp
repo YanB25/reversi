@@ -45,6 +45,13 @@ public:
 
 };
 
+class CloseCornerEval : public EvalBase {
+public:
+    CloseCornerEval() {}
+    virtual double eval(const ChessBox& cb, int p) const;
+    virtual ~CloseCornerEval() {}
+};
+
 class FrontEval : public EvalBase {
 public:
     FrontEval(){}

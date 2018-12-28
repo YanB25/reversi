@@ -15,7 +15,7 @@ const int GAME = 3;
 const int ROUND = 2;
 const int ITERS = 3;
 // int initParams[] = {1, 1, 10, 8, 7};
-vector<double> initParams{1, 1, 10, 8, 7};
+vector<double> initParams{1, 80, 10, 8, 7, 38};
 
 void print(const vector<double>& p) {
     for (int i = 0; i < p.size(); ++i) {
@@ -30,9 +30,8 @@ struct EvalGroup {
     CountingEval counting_eval;
     ActionEval action_eval;
     FrontEval front_eval;
+    CloseCornerEval close_corner_eval;
     AllInOneEval eval;
-    EvalGroup() {
-    }
     EvalGroup(vector<double> params) {
         __params = params;
     }
@@ -42,6 +41,7 @@ struct EvalGroup {
         eval.addEval(counting_eval, __params[2]);
         eval.addEval(action_eval, __params[3]);
         eval.addEval(front_eval, __params[4]);
+        eval.addEval(close_corner_eval, __params[5]);
 
     }
     double get(int idx) const {

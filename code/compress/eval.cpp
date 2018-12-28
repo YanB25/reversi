@@ -40,7 +40,16 @@ double CornerEval::eval(const ChessBox& cb, int p) const {
     op += cb.isWhitePiece(cb.TO_SQUARE(7, 7));
     double c = 25 * (my - op);
 
-    my = 0; op = 0;
+    if (p == BLACK_ID) {
+        return c; // 80
+    } else {
+        return -c;
+    }
+}
+
+double CloseCornerEval::eval(const ChessBox& cb, int p) const {
+    double my = 0; 
+    double op = 0;
     if (cb.isEmpty(cb.TO_SQUARE(0, 0))) {
         my += cb.isBlackPiece(cb.TO_SQUARE(0, 1));
         op += cb.isWhitePiece(cb.TO_SQUARE(0, 1));
@@ -75,10 +84,11 @@ double CornerEval::eval(const ChessBox& cb, int p) const {
     }
     double l = -12.5 * (my - op);
     if (p == BLACK_ID) {
-        return 80 * c + 38 * l;
+        return l; // 38
     } else {
-        return -(80 * c + 38 * l);
+        return -l;
     }
+
 }
 
 double FrontEval::eval(const ChessBox& cb, int p) const {
