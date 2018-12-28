@@ -11,11 +11,15 @@
 
 using namespace std;
 
-const int GAME = 3;
-const int ROUND = 2;
-const int ITERS = 3;
-// int initParams[] = {1, 1, 10, 8, 7};
-vector<double> initParams{1, 80, 10, 8, 7, 38};
+int start = 49;
+const int GAME = 5;
+const int ROUND = 6;
+const int ITERS = 300;
+// vector<double> initParams{1, 80, 10, 8, 7, 38}; // standard
+vector<double> initParams{1.327349, 88.602155, 6.009883, 6.683687, 8.286318, 30.431086};
+// 0.685248, 45.434353, 2.611930, 4.371898, 4.344627, 18.193775
+// 1.327349, 88.602155, 6.009883, 6.683687, 8.286318, 30.431086
+int best_record = -1;
 
 void print(const vector<double>& p) {
     for (int i = 0; i < p.size(); ++i) {
@@ -98,8 +102,10 @@ void self_play(int i, int j) {
 }
 int main() {
     srand(time(0));
-    printf("iters, ids, wins, newrecord, p1, p2, p3, p4, p5\n");
-    for (int _ = 0; _ < ITERS; ++_) {
+    printf("iters, ids, wins, newrecord, p1, p2, p3, p4, p5, p6\n");
+    for (int _ = start; _ < ITERS; ++_) {
+        bool mutation = (rand() % 100) <= 5;
+        // bool mutation = true;
         vector<thread> threads;
 
         param.clear();
@@ -108,7 +114,12 @@ int main() {
         for (int i = 1; i < GAME; ++i) {
             vector<double> tmps(param[0].begin(), param[0].end());
             for (int k = 0; k < param[0].size(); ++k) {
-                double percentage = ((rand() % 30) - 15) * 0.01;
+                double percentage;
+                if (mutation) {
+                    percentage = ((rand() % 150) - 50) * 0.01;
+                } else {
+                    percentage = ((rand() % 28) - 13) * 0.01;
+                }
                 tmps[k] *= 1 + percentage;
             }
             param[i].assign(tmps.begin(), tmps.end());
@@ -156,14 +167,20 @@ int main() {
         //     cout << sumup[i] << " ";
         // }
         // cout << endl;
+        auto argmax = std::max_element(sumup.begin(), sumup.end());
+        int argmax_idx = argmax - sumup.begin();
+
         for (int i = 0; i < GAME; ++i) {
-            printf("%d, %d, %d, %d, %lf, %lf, %lf, %lf, %lf\n", _, i, sumup[i], 0, param[i][0],
-                param[i][1], param[i][2], param[i][3], param[i][4]);
+            int is_best_record = 0;
+            if (sumup[i] > best_record) {
+                is_best_record = 1;
+                best_record = sumup[i];
+            }
+            printf("%d, %d, %d, %d, %lf, %lf, %lf, %lf, %lf, %lf\n", _, i, sumup[i], i == argmax_idx, param[i][0],
+                param[i][1], param[i][2], param[i][3], param[i][4], param[i][5]);
             fflush(stdout);
         }
 
-        auto argmax = std::max_element(sumup.begin(), sumup.end());
-        int argmax_idx = argmax - sumup.begin();
         initParams.assign(param[argmax_idx].begin(), param[argmax_idx].end());
     }
 }
