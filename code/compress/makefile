@@ -1,4 +1,4 @@
-all: test inheritage.out
+all: test inheritage.out ../build/inheritance4api.out
 CC=g++
 CCFLAGS=-std=c++11 -ofast -D DEBUG -pthread
 chessbox.o: chessbox.cpp chessbox.hpp
@@ -21,6 +21,11 @@ inheritage.out: inheritage.o chessbox.o alphabet.o eval.o
 	${CC} ${CCFLAGS} -o $@ $^
 inheritage.o: inheritage.cpp
 	${CC} -c ${CCFLAGS} -o $@ $<
+
+../build/inheritance4api.out: inheritance4api.o chessbox.o alphabet.o eval.o 
+	${CC} -std=c++11 -ofast -o $@ $^
+inheritance4api.o: inheritance4api.cpp
+	${CC} -std=c++11 -ofast -c -o $@ $<
 
 clean:
 	find . -name "*.o" -delete

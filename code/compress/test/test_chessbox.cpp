@@ -15,15 +15,16 @@ int main() {
     ActionEval ae;
     FrontEval fe;
     CloseCornerEval cee;
+    BorderEval be;
 
-    AllInOneEval eval;
-    eval.addEval(te, 1.477074);
-    eval.addEval(ce, 86.617467);
-    eval.addEval(cte, 7.202244);
-    eval.addEval(ae, 7.099412);
-    eval.addEval(fe, 7.743564);
-    eval.addEval(cee, 33.808937);
-    AlphaBetaSolve abs(eval, chessbox);
+    // AllInOneEval eval;
+    // eval.addEval(te, 1.477074);
+    // eval.addEval(ce, 86.617467);
+    // eval.addEval(cte, 7.202244);
+    // eval.addEval(ae, 7.099412);
+    // eval.addEval(fe, 7.743564);
+    // eval.addEval(cee, 33.808937);
+    AlphaBetaSolve abs(be, chessbox);
 
     while(!chessbox.isEnd()) {
         int a, b;
@@ -43,7 +44,7 @@ int main() {
         for (const auto& pos : s) {
             cout << pos.x << " " << pos.y << " " << pos.val << endl;
         }
-        eval.detailEval(chessbox, BLACK_ID);
+        // eval.detailEval(chessbox, BLACK_ID);
     }
 
 };

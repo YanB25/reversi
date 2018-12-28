@@ -3,6 +3,9 @@
 #include "chessbox.hpp"
 #include <vector>
 using std::vector;
+
+#define BORDER (0b1111111110000001100000011000000110000001100000011000000111111111ull)
+
 class EvalBase {
 public:
     EvalBase() {}
@@ -89,6 +92,13 @@ public:
     virtual ~ActionEval() {}
 private:
     vector<EvalBase*> evals;
+};
+
+class BorderEval : public EvalBase {
+public:
+    BorderEval() {}
+    virtual double eval(const ChessBox& cb, int p) const;
+    virtual ~BorderEval() {}
 };
 
 

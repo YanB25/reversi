@@ -141,3 +141,16 @@ double ActionEval::eval(const ChessBox& cb, int p) const {
         return 0;
     }
 }
+
+double BorderEval::eval(const ChessBox& cb, int p) const {
+    int me = cb.__getBoard(p) & BORDER;
+    int opp = cb.__getBoard(!p) & BORDER;
+    int me_bonus = __builtin_popcountll(me);
+    int opp_bonus = __builtin_popcountll(opp);
+    if (me_bonus == opp_bonus) return 0;
+    if (me_bonus > opp_bonus) {
+        return 100 * me_bonus / (me_bonus + opp_bonus);
+    } else {
+        return -100 * opp_bonus / (me_bonus + opp_bonus);
+    }
+}

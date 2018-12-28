@@ -196,10 +196,10 @@ void ChessBox::drop(int row, int col, int p) {
         return;
     }
     int sq = TO_SQUARE(row, col);
-    #ifdef DEBUG
-    u64 moves = getMovable(p);
-    assert(moves & (1ull << sq));
-    #endif
+    // #ifdef DEBUG
+    // u64 moves = getMovable(p);
+    // assert(moves & (1ull << sq));
+    // #endif
     __place(sq, p);
     __flip(sq, p);
 }
