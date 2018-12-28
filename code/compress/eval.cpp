@@ -1,4 +1,5 @@
 #include "eval.hpp"
+#include "bictl.hpp"
 
 double CountingEval::eval(const ChessBox& cb, int p) const {
     int m = cb.countPieces(p);
@@ -143,8 +144,8 @@ double ActionEval::eval(const ChessBox& cb, int p) const {
 }
 
 double BorderEval::eval(const ChessBox& cb, int p) const {
-    int me = cb.__getBoard(p) & BORDER;
-    int opp = cb.__getBoard(!p) & BORDER;
+    u64 me = cb.__getBoard(p) & BORDER;
+    u64 opp = cb.__getBoard(!p) & BORDER;
     int me_bonus = __builtin_popcountll(me);
     int opp_bonus = __builtin_popcountll(opp);
     if (me_bonus == opp_bonus) return 0;
@@ -153,4 +154,39 @@ double BorderEval::eval(const ChessBox& cb, int p) const {
     } else {
         return -100 * opp_bonus / (me_bonus + opp_bonus);
     }
+}
+
+#define HALF_STABLE_HELPER(dir, who) \
+    tmp = who & BORDER; \
+    for (int i = 0; i < 3; ++i) { \
+        tmp |= dir(tmp) & who; \
+    } \
+    ret |= tmp;
+
+double HalfStableEval::eval(const ChessBox& cb, int p) const {
+    // p first
+    u64 cur = cb.__getBoard(p);
+    u64 tmp, ret = 0;
+    HALF_STABLE_HELPER(N, cur);
+    HALF_STABLE_HELPER(S, cur);
+    HALF_STABLE_HELPER(E, cur);
+    HALF_STABLE_HELPER(W, cur);
+    HALF_STABLE_HELPER(NE, cur);
+    HALF_STABLE_HELPER(NW, cur);
+    HALF_STABLE_HELPER(SE, cur);
+    HALF_STABLE_HELPER(SW, cur);
+    int my_bonus = __builtin_popcountll(ret);
+
+    u64 opp = cb.__getBoard(!p);
+    ret = 0;
+    HALF_STABLE_HELPER(N, opp);
+    HALF_STABLE_HELPER(S, opp);
+    HALF_STABLE_HELPER(E, opp);
+    HALF_STABLE_HELPER(W, opp);
+    HALF_STABLE_HELPER(NE, opp);
+    HALF_STABLE_HELPER(NW, opp);
+    HALF_STABLE_HELPER(SE, opp);
+    HALF_STABLE_HELPER(SW, opp);
+    int opp_bonus = __builtin_popcountll(ret);
+    return 10 * (my_bonus - opp_bonus);
 }

@@ -101,5 +101,11 @@ public:
     virtual ~BorderEval() {}
 };
 
+class HalfStableEval : public EvalBase {
+public:
+    HalfStableEval() {}
+    virtual double eval(const ChessBox& cb, int p) const;
+    virtual ~HalfStableEval() {}
+};
 
 #endif
