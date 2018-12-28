@@ -31,12 +31,17 @@ struct EvalGroup {
     ActionEval action_eval;
     FrontEval front_eval;
     AllInOneEval eval;
+    EvalGroup() {
+    }
     EvalGroup(vector<double> params) {
-        eval.addEval(table_eval, params[0]);
-        eval.addEval(corner_eval, params[1]);
-        eval.addEval(counting_eval, params[2]);
-        eval.addEval(action_eval, params[3]);
-        eval.addEval(front_eval, params[4]);
+        __params = params;
+    }
+    void init() {
+        eval.addEval(table_eval, __params[0]);
+        eval.addEval(corner_eval, __params[1]);
+        eval.addEval(counting_eval, __params[2]);
+        eval.addEval(action_eval, __params[3]);
+        eval.addEval(front_eval, __params[4]);
 
     }
     double get(int idx) const {
@@ -53,6 +58,7 @@ struct EvalGroup {
     void setParams(const vector<double>& params) {
         eval.setParams(params);
     }
+    vector<double> __params;
 };
 
 vector<vector<double>> param;
@@ -114,6 +120,9 @@ int main() {
         evalGroups.clear();
         for (int i = 0; i < GAME; ++i) {
             evalGroups.push_back(EvalGroup(param[i]));
+        }
+        for (int i = 0; i < GAME; ++i) {
+            evalGroups[i].init();
         }
 
         threads.clear();
