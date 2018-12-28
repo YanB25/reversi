@@ -14,14 +14,15 @@ int main() {
     CountingEval cte;
     ActionEval ae;
     FrontEval fe;
+    CloseCornerEval cee;
 
     AllInOneEval eval;
-    eval.addEval(te, 1);
-    eval.addEval(ce, 1);
-    eval.addEval(cte, 10);
-    eval.addEval(ae, 8);
-    eval.addEval(fe, 7);
-
+    eval.addEval(te, 1.477074);
+    eval.addEval(ce, 86.617467);
+    eval.addEval(cte, 7.202244);
+    eval.addEval(ae, 7.099412);
+    eval.addEval(fe, 7.743564);
+    eval.addEval(cee, 33.808937);
     AlphaBetaSolve abs(eval, chessbox);
 
     while(!chessbox.isEnd()) {

@@ -5,6 +5,8 @@
         "cctype": "cpp",
         "iostream": "cpp",
         "utility": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "thread": "cpp",
+        "cstdlib": "cpp"
     }
 }
