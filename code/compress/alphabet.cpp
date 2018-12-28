@@ -42,7 +42,7 @@ vector<Position> AlphaBetaSolve::n_solve(int n, int p, int depth, bool trunc) co
 }
 
 Position AlphaBetaSolve::solve(int p, int depth, bool trunc) const {
-    auto choices = n_solve(3, p, depth, trunc);
+    auto choices = n_solve(2, p, depth, trunc);
     int target = rand() % choices.size();
     // cout << "target " << target << endl;
     return choices[target];
