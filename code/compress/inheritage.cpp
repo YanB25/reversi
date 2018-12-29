@@ -11,12 +11,12 @@
 
 using namespace std;
 
-int start = 63;
+int start = 271;
 const int GAME = 5;
 const int ROUND = 2;
-const int ITERS = 4000;
+const int ITERS = 4005;
 // vector<double> initParams{1, 80, 10, 8, 7, 38}; // standard
-vector<double> initParams{3.839793, 105.464095, 12.543550, 23.364513, 35.068640, 127.346112, 24.436968, 13.140249};
+vector<double> initParams{110.961556, 783.386420, 140.065195, 20.062386, 120.334393, 451.679341, 48.225673, 17.338180};
 // 0.685248, 45.434353, 2.611930, 4.371898, 4.344627, 18.193775
 // 1.327349, 88.602155, 6.009883, 6.683687, 8.286318, 30.431086
 //  93:
