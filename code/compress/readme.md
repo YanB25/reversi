@@ -29,10 +29,10 @@ int main() {
 
     int sq2 = chessbox.TO_SQUARE(5, 4); // 将行列转换为sq表示法
 
-    // 得到黑棋的所有可行动位置。位置以sequence的方式表示
+    // 得到黑棋的所有可行动位置。位置以sq的方式表示
     vector<int> movessq(BLACK_ID);
 
-    // chessbox.__place(sequence, player) // player在sequence位置放上一个子（只是放子而已，不翻转）
+    // chessbox.__place(sq, player) // player在sq位置放上一个子（只是放子而已，不翻转）
 }
 ```
 
@@ -82,7 +82,7 @@ int main() {
     AlphaBetaSolve abs(eval, chessbox);
 
     Position p = abs.solve(BLACK_ID); // 得到一个解
-    // vector<Position> ps = abs.n_solve(BLACK_ID, 5); // 得到最多5个解，ps[0]是最优解，ps[ps.size()-1]是最劣解。
+    // vector<Position> ps = abs.n_solve(5, BLACK_ID); // 得到最多5个解，ps[0]是最优解，ps[ps.size()-1]是最劣解。
     int resultX = p.x;
     int resultY = p.y;
     int evaluation = p.val; // **黑方**的估值
