@@ -148,12 +148,13 @@ double BorderEval::eval(const ChessBox& cb, int p) const {
     u64 opp = cb.__getBoard(!p) & BORDER;
     int me_bonus = __builtin_popcountll(me);
     int opp_bonus = __builtin_popcountll(opp);
-    if (me_bonus == opp_bonus) return 0;
-    if (me_bonus > opp_bonus) {
-        return 100 * me_bonus / (me_bonus + opp_bonus);
-    } else {
-        return -100 * opp_bonus / (me_bonus + opp_bonus);
-    }
+    // if (me_bonus == opp_bonus) return 0;
+    // if (me_bonus > opp_bonus) {
+    //     return 100 * me_bonus / (me_bonus + opp_bonus);
+    // } else {
+    //     return -100 * opp_bonus / (me_bonus + opp_bonus);
+    // }
+    return 12.5 * (me_bonus - opp_bonus);
 }
 
 #define HALF_STABLE_HELPER(dir, who) \
@@ -188,5 +189,5 @@ double HalfStableEval::eval(const ChessBox& cb, int p) const {
     HALF_STABLE_HELPER(SE, opp);
     HALF_STABLE_HELPER(SW, opp);
     int opp_bonus = __builtin_popcountll(ret);
-    return 10 * (my_bonus - opp_bonus);
+    return 6 * (my_bonus - opp_bonus);
 }
