@@ -305,7 +305,7 @@
 \begin{itemize}
     \item 二进制棋盘压缩及其状态维护
     \item 进一步剪枝的alpha-beta算法
-    \item 提出了7种不同的评价指标
+    \item 提出了8种不同的评价指标
     \item 自我博弈的进化算法
 \end{itemize}
 以上几个功能相辅相成，他们可以共同配合让黑白棋获得更大的棋力。除此之外，以上的许多功能
@@ -335,8 +335,8 @@ alpha-beta算法的运行速度会在中盘明显地下降。\\
 很低的顶点，按估值降序继续alpha-beta的搜索过程。\\
 
 这个放在对前期和后期会带来略微的性能下降，可是却能大大加快中盘的搜索速度。
-\subsection{7种不同的评价指标}
-我为黑白棋的估值总结了7种不同的方法。这些几种估值方法从不同的方面估计棋盘的局势。
+\subsection{8种不同的评价指标}
+我为黑白棋的估值总结了8种不同的方法。这些几种估值方法从不同的方面估计棋盘的局势。
 他们是
 \begin{enumerate}
     \item 估值表估值法
@@ -345,9 +345,13 @@ alpha-beta算法的运行速度会在中盘明显地下降。\\
     \item 基于行动力的估值
     \item 基于棋子边缘的估值
     \item 基于棋子个数的估值
-    \item 基于稳定子的估值
+    \item 基于半稳定子的估值
+    \item 棋盘边界估值
 \end{enumerate}
 后文会详细介绍这些估值法的具体含义，并给出有效的实现方法。\\
+
+\emph{NOTE: 实际上，最终的估值方法是以上所有估值的加权平均。权重由进化算法
+学习得到。} \\
 
 这几种估值方法抽象成了接口，可以为组员提供很大的帮助。例如，这些估值可以作为神经网络
 的额外输入，或者作为提供给资源的额外评价指标。
@@ -620,6 +624,62 @@ const int VALUE[8*8] = {
 
 边缘棋子估值的方法是，计算自己的边缘棋子和对方的边缘棋子的占比。返回
 自己的边缘棋子百分比 * 100。
+
+\subsection{边界棋子数估值}
+边界棋子指的是贴着棋盘的边界的棋子。一般来说，边界棋子越多，局面越好。\\
+
+边界棋子数估值采用的方法是，计算自己和对方的边界棋子的占比。返回
+百分比 * 100。
+
+\subsection{半稳定子估值}
+半稳定子指的是有一端不可能为对方棋子的子。例如贴着棋盘边缘的棋子，从棋盘的角
+斜着延伸到棋盘中部的一系列棋子，等等。\\
+
+半稳定子判断有个好处。第一个是，半稳定子往往比较稳定，半稳定子越多，往往局面优势
+越大。除此之外，半稳定子的计算方式十分简单快速。\\
+
+\autoref{lst:halfstable}展示的是玩家p的稳定子的计算方式。其中cur是u64，代表
+玩家p的下棋信息。tmp是临时变量，ret是返回值。\\
+
+对于HALF\_STABLE\_HELPER的每次调用，例如HALF\_STABLE\_HELPER(N)，它的步骤如下
+\begin{enumerate}[label=(\alph*)]
+    \item 取得棋盘的所有边界子（与棋盘的边界相邻的子）。记入tmp
+    \item 将所有的边界子向上平移一个单位，与自己的棋子位置项与。结果与tmp相或。
+    \item 反复(b)3次。
+    \item 将结果与ret相或
+\end{enumerate}
+如此得到的ret即是棋盘上的所有半稳定子。\\
+
+采用半稳定子的个数差的值来估计局面。
+
+\begin{figure}[!hbt]
+\begin{itemize}
+\item[] \begin{lstlisting}[style=mycpp, label=lst:halfstable, caption=半稳定子的计算方式]
+#define HALF_STABLE_HELPER(dir, who) \
+    tmp = who & BORDER; \
+    for (int i = 0; i < 3; ++i) { \
+        tmp |= dir(tmp) & who; \
+    } \
+    ret |= tmp;
+
+double HalfStableEval::eval(const ChessBox& cb, int p) const {
+    // p first
+    u64 cur = cb.__getBoard(p);
+    u64 tmp, ret = 0;
+    HALF_STABLE_HELPER(N, cur);
+    HALF_STABLE_HELPER(S, cur);
+    HALF_STABLE_HELPER(E, cur);
+    HALF_STABLE_HELPER(W, cur);
+    HALF_STABLE_HELPER(NE, cur);
+    HALF_STABLE_HELPER(NW, cur);
+    HALF_STABLE_HELPER(SE, cur);
+    HALF_STABLE_HELPER(SW, cur);
+    int my_bonus = __builtin_popcountll(ret);
+    // ...
+}
+\end{lstlisting}
+\end{itemize}
+\end{figure}
 
 \subsection{综合估值}\label{subsec:sum}
 综合估值是这里最重要的估值。\\
