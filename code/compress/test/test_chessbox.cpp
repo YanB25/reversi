@@ -19,16 +19,16 @@ int main() {
     HalfStableEval hse;
 
     AllInOneEval eval;
-    eval.addEval(te, 1.477074);
-    eval.addEval(ce, 86.617467);
-    eval.addEval(cte, 7.202244);
-    eval.addEval(ae, 7.099412);
-    eval.addEval(fe, 7.743564);
-    eval.addEval(cee, 33.808937);
-    eval.addEval(be, 10);
-    eval.addEval(hse, 15);
+    eval.addEval(te, 5.767431);
+    eval.addEval(ce, 93.199025);
+    eval.addEval(cte, 14.310416);
+    eval.addEval(ae, 26.005846);
+    eval.addEval(fe, 25.107981);
+    eval.addEval(cee, 153.294812);
+    eval.addEval(be, 23.111579);
+    eval.addEval(hse, 15.381006);
     AlphaBetaSolve abs(eval, chessbox);
-
+// 5.767431, 93.199025, 14.310416, 26.005846, 25.107981, 153.294812, 23.111579, 15.381006
     while(!chessbox.isEnd()) {
         int a, b;
         cin >> a >> b;
