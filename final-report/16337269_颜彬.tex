@@ -512,6 +512,22 @@ void ChessBox::__flip(int sq, int p) {
 \end{itemize}
 \end{figure}
 
+\begin{figure}[!hbt]
+    \begin{center}
+    \includegraphics[scale=0.4]{assets/revert.png}
+    \caption{棋盘翻转示意图（向上方向）\label{fig:revert}} 
+    \end{center} 
+\end{figure} 
+为了更具体地解释怎么做棋盘反转，可以参考\autoref{fig:revert}。\\
+
+假设黑子下了深橙色标注的下方位置。算法需要单独地考虑8个方向。
+假设考虑向上翻转。算法会不断地查看下子位置向上移动一格的那个位置。如果那个位置
+是对方的棋子，就进行标记。反复地重复上述过程（如左图三），把上方的一系列对方棋子
+进行标记。直到遇到了自己的棋子或标记。\\
+
+如果遇到了自己的棋子，就把标记位提取出来。如果遇到了空位置或边界位置，则把
+标志位清空。对双方的棋子按标记位做异或，就完成了一次棋盘的更新。
+
 \subsection{进一步剪枝的alpha-beta算法}
 \subsubsection{辅助函数}\label{subsec:ab-trunc-helper}
 alpha-beta剪枝的minimax算法可以被进一步地剪枝。
