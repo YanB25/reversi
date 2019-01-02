@@ -376,6 +376,13 @@ alpha-beta算法的运行速度会在中盘明显地下降。\\
 
 用第一个u64代表黑棋的分布，用第二个代表白棋的分布。用两个整数的\emph{位或}代表已经
 下列棋子的位置。
+\begin{figure}[!hbt]
+    \begin{center}
+    \includegraphics[scale=0.4]{assets/ill.png}
+    \caption{二进制表示示意图\label{fig:label}} 
+    \end{center} 
+\end{figure} 
+
 
 \subsection{基本的信息提取}
 棋盘类必须为其他模块提供必要的接口，他们的实现方法如下。\\
