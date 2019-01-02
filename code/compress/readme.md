@@ -1,4 +1,25 @@
 # 接口说明文档
+## 文件介绍
+### chessbox
+chessbox.hpp和chessbox.cpp实现的是二进制棋盘。定义了
+棋盘暴露的一系列API。
+估值在eval.hpp和eval.cpp中实现，它们是与棋盘解耦的。
+### eval
+eval.cpp和eval.hpp分别实现了10种不同的估值方法。它依赖于
+chessbox。
+### alphabet
+alphabet.hpp和alphabet.cpp实现了alpha-beta剪枝的minimax算法。提供了接口，用于直接返回最佳的行动方案。
+### inheritage
+inheritage.cpp和inheritage4api.cpp使用了上述文件。
+它各自定义了main函数。inheriage.cpp是进化算法的实现文件。inheritage4api.cppAI和玩家博弈的文件。
+### bictl
+bictl.hpp实现了二进制棋盘的一系列辅助函数（辅助宏）。
+## 编译、运行方法
+``` shell
+$ make
+$ make run # AI和玩家对弈
+$ make int # 运行进化算法
+```
 ## 棋盘类
 ### 位置表示
 位置的表示有两种。第一种是
